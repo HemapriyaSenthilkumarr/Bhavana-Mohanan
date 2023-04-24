@@ -1,0 +1,146 @@
+﻿@model IEnumerable<Category>
+
+
+<h1>Product Category</h1>
+
+
+@if (Model.Count() > 0) //Check if there is any data in the model
+{
+    <div class="search-container">
+        <input class="search-bar" id="search" />
+        <button onclick="search()">search</button>
+    </div>
+    <table id="Product_Table" class="container-table table table-bordered table-striped" style="width:100%">
+        <!--table header section-->
+        <thead>    
+            <tr>
+                <th>
+                    Product Name
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Category
+                </th>
+                <th>
+                    Weight
+                </th>
+                <th>
+                    MRP
+                </th>
+                <th>
+                    Discount
+                </th>
+                <th>
+                    Final Price
+                </th>
+            </tr>
+        </thead>
+        <tbody> 
+            @foreach (var obj in Model)
+            {
+                <tr>
+                    <td width="50%">
+                        @obj.ProductName
+
+                    </td>
+                    <td width="50%">
+                        @obj.Description
+
+                    </td>
+                    <td width="50%">
+                        @obj.category
+
+                    </td>
+                    <td width="50%">
+                        @obj.Weight
+
+                    </td>
+                    <td width="50%">
+                        @obj.MRP
+
+                    </td>
+                    <td width="50%">
+                        @obj.Discount
+
+                    </td>
+                    <td width="50%">
+                        @obj.Finalprice
+
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+    </table>
+}
+// if there is no data in the table
+else 
+{
+    <table id="Product_Table" class="table table-bordered table-striped" style="width:100%">
+        <thead>
+            <tr>
+                <th>
+                    Product Name
+                </th>
+                <th>
+                    Description
+                </th>
+                <th>
+                    Category
+                </th>
+                <th>
+                    Weight
+                </th>
+                <th>
+                    MRP
+                </th>
+                <th>
+                    Discount
+                </th>
+                <th>
+                    Final Price
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td align="center" colspan="7">
+                    No Data to display.
+                </td>
+            </tr>
+        </tbody>
+    </table>
+}
+<!--script to handle searching for data in the table-->
+@section scripts
+    {
+    <script>
+        function search() {
+            var count_flag = false;
+            //iterate through each row of the table
+            $("tr").each(function (index, value) {
+                //if it doesnt contaim the search value, hide it
+                if ((index > 0) && !( ($(this).find("td")[0] && $(this).find("td")[0].innerText.includes($("#search").val())) ||
+                    ($(this).find("td")[1] && $(this).find("td")[1].innerText.includes($("#search").val()))) ) {
+                    $(this).attr("hidden", true);
+                } else if (index > 0) { //otherwise,show the row 
+                    $(this).removeAttr("hidden");
+                    count_flag = true;
+                }
+                console.log(value);
+            });
+            //if no rows were found add a message to table
+            if (!count_flag) { 
+                $("#Product_Table").find('tbody').append("<tr><td align='center' colspan='7' class='no-data'>No Data to display.</td></tr>");
+            }
+            //otherwise remove the message
+            else{;
+                $("#Product_Table .no-data").remove();
+            }
+
+        }
+
+    </script>
+}
